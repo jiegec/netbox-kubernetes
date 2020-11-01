@@ -184,36 +184,3 @@ spec:
     targetPort: 8001
   selector:
     app: netbox
-
-      
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: netbox-static-files-pv-claim
-  labels:
-    app: netbox
-spec:
-  storageClassName: manual
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 100Mi
-
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: netbox-static-files-pv
-  labels:
-    type: local
-    app: netbox
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 100Mi
-  accessModes:
-    - ReadWriteMany
-  hostPath:
-    path: "/data/k8s/netbox-static-files"
