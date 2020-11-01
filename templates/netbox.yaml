@@ -74,6 +74,11 @@ spec:
             configMapKeyRef:
               key: NETBOX_USERNAME
               name: {{ .Release.Name }}-app-env
+        - name: BASE_PATH
+          valueFrom:
+            configMapKeyRef:
+              key: BASE_PATH
+              name: {{ .Release.Name }}-app-env
         - name: LOGIN_REQUIRED
           valueFrom:
             configMapKeyRef:

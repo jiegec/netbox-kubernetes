@@ -4,6 +4,7 @@ netbox:
   superuserPassword: admin
   superuserEmail: admin@example.com
   secretKey: qwertyuiopasdfghjklzxcvbnm
+  basePath: 'netbox/'
 
 postgres:
   image: postgres:13.0-alpine
