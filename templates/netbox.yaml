@@ -183,9 +183,11 @@ metadata:
   labels:
     app: {{ .Release.Name }}-app
 spec:
+  type: NodePort
   ports:
   - name: netbox
     port: 8001
-    targetPort: 8001
+    targetPort: 80
+    nodePort: 30000
   selector:
     app: {{ .Release.Name }}-app
