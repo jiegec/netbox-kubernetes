@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: netbox-app
+  name: {{ .Release.Name }}-app
   labels:
-    app: netbox-app
+    app: {{ .Release.Name }}-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: netbox-app
+      app: {{ .Release.Name }}-app
   template:
     metadata:
       labels:
-        app: netbox-app
+        app: {{ .Release.Name }}-app
     spec:
       containers:
       - name: netbox
@@ -28,77 +28,77 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: ALLOWED_HOSTS
-              name: netbox-app-env
+              name: {{ .Release.Name }}-app-env
         - name: DB_HOST
           valueFrom:
             configMapKeyRef:
               key: DB_HOST
-              name: netbox-app-env
+              name: {{ .Release.Name }}-app-env
         - name: DB_NAME
           valueFrom:
             configMapKeyRef:
               key: DB_NAME
-              name: netbox-app-env
+              name: {{ .Release.Name }}-app-env
         - name: DB_USER
           valueFrom:
             configMapKeyRef:
               key: DB_USER
-              name: netbox-app-env
+              name: {{ .Release.Name }}-app-env
         - name: EMAIL_FROM
           valueFrom:
             configMapKeyRef:
               key: EMAIL_FROM
-              name: netbox-app-env
+              name: {{ .Release.Name }}-app-env
         - name: EMAIL_PORT
           valueFrom:
             configMapKeyRef:
               key: EMAIL_PORT
-              name: netbox-app-env
+              name: {{ .Release.Name }}-app-env
         - name: EMAIL_SERVER
           valueFrom:
             configMapKeyRef:
               key: EMAIL_SERVER
-              name: netbox-app-env
+              name: {{ .Release.Name }}-app-env
         - name: EMAIL_TIMEOUT
           valueFrom:
             configMapKeyRef:
               key: EMAIL_TIMEOUT
-              name: netbox-app-env
+              name: {{ .Release.Name }}-app-env
         - name: EMAIL_USERNAME
           valueFrom:
             configMapKeyRef:
               key: EMAIL_USERNAME
-              name: netbox-app-env
+              name: {{ .Release.Name }}-app-env
         - name: NETBOX_USERNAME
           valueFrom:
             configMapKeyRef:
               key: NETBOX_USERNAME
-              name: netbox-app-env
+              name: {{ .Release.Name }}-app-env
         - name: LOGIN_REQUIRED
           valueFrom:
             configMapKeyRef:
               key: LOGIN_REQUIRED
-              name: netbox-app-env
+              name: {{ .Release.Name }}-app-env
         - name: REDIS_HOST
           valueFrom:
             configMapKeyRef:
               key: REDIS_HOST
-              name: netbox-app-env
+              name: {{ .Release.Name }}-app-env
         - name: REDIS_CACHE_HOST
           valueFrom:
             configMapKeyRef:
               key: REDIS_CACHE_HOST
-              name: netbox-app-env
+              name: {{ .Release.Name }}-app-env
         - name: REDIS_PORT
           valueFrom:
             configMapKeyRef:
               key: REDIS_PORT
-              name: netbox-app-env
+              name: {{ .Release.Name }}-app-env
         - name: REDIS_CACHE_PORT
           valueFrom:
             configMapKeyRef:
               key: REDIS_CACHE_PORT
-              name: netbox-app-env
+              name: {{ .Release.Name }}-app-env
         volumeMounts:
         - name: netbox-db-password
           mountPath: /run/secrets/db_password
@@ -138,25 +138,25 @@ spec:
       # passwords
       - name: netbox-db-password
         configMap:
-          name: netbox-app-env
+          name: {{ .Release.Name }}-app-env
           items:
             - key: DB_PASSWORD
               path: DB_PASSWORD
       - name: netbox-email-password
         configMap:
-          name: netbox-app-env
+          name: {{ .Release.Name }}-app-env
           items:
             - key: EMAIL_PASSWORD
               path: EMAIL_PASSWORD
       - name: netbox-secret-key
         configMap:
-          name: netbox-app-env
+          name: {{ .Release.Name }}-app-env
           items:
             - key: SECRET_KEY
               path: SECRET_KEY
       - name: netbox-superuser-password
         configMap:
-          name: netbox-app-env
+          name: {{ .Release.Name }}-app-env
           items:
             - key: SUPERUSER_PASSWORD
               path: SUPERUSER_PASSWORD
@@ -165,7 +165,7 @@ spec:
         emptyDir: {}
       - name: netbox-nginx-config
         configMap:
-          name: netbox-app-env
+          name: {{ .Release.Name }}-app-env
           items:
             - key: nginx.conf
               path: nginx.conf
@@ -174,13 +174,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: netbox
+  name: {{ .Release.Name }}-app
   labels:
-    app: netbox
+    app: {{ .Release.Name }}-app
 spec:
   ports:
-  - name: nbox
+  - name: netbox
     port: 8001
     targetPort: 8001
   selector:
-    app: netbox
+    app: {{ .Release.Name }}-app

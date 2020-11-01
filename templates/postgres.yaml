@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: netbox-postgres
+  name: {{ .Release.Name }}-postgres
   labels:
-    app: netbox-postgres
+    app: {{ .Release.Name }}-postgres
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: netbox-postgres
+      app: {{ .Release.Name }}-postgres
   template:
     metadata:
       labels:
-        app: netbox-postgres
+        app: {{ .Release.Name }}-postgres
     spec:
       volumes:
         - name: postgres
           persistentVolumeClaim:
-            claimName: netbox-postgres-pv-claim
+            claimName: {{ .Release.Name }}-postgres-pv-claim
       containers:  
       - image: postgres:13.0-alpine
         name: postgres 
@@ -35,17 +35,17 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: POSTGRES_DB
-              name: netbox-postgres-env
+              name: {{ .Release.Name }}-postgres-env
         - name: POSTGRES_USER
           valueFrom:
             configMapKeyRef:
               key: POSTGRES_USER
-              name: netbox-postgres-env      
+              name: {{ .Release.Name }}-postgres-env      
         - name: POSTGRES_PASSWORD
           valueFrom:
             configMapKeyRef:
               key: POSTGRES_PASSWORD
-              name: netbox-postgres-env
+              name: {{ .Release.Name }}-postgres-env
           
       restartPolicy: Always
 
@@ -53,9 +53,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: netbox-postgres
+  name: {{ .Release.Name }}-postgres
   labels:
-    app: netbox-postgres
+    app: {{ .Release.Name }}-postgres
 spec:
   clusterIP: None
   ports:
@@ -63,13 +63,13 @@ spec:
     port: 5432
     targetPort: 5432
   selector:
-    app: netbox-postgres
+    app: {{ .Release.Name }}-postgres
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: netbox-postgres-pv-claim
+  name: {{ .Release.Name }}-postgres-pv-claim
 spec:
   storageClassName: manual
   accessModes:
@@ -82,7 +82,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: netbox-postgres-pv
+  name: {{ .Release.Name }}-postgres-pv
   labels:
     type: local
 spec:

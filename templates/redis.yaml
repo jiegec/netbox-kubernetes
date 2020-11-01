@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: netbox-redis
+  name: {{ .Release.Name }}-redis
   labels:
-    app: netbox-redis
+    app: {{ .Release.Name }}-redis
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: netbox-redis
+      app: {{ .Release.Name }}-redis
   template:
     metadata:
       labels:
-        app: netbox-redis
+        app: {{ .Release.Name }}-redis
     spec:
       volumes:
         - name: redis
           persistentVolumeClaim:
-            claimName: netbox-redis-pv-claim
+            claimName: {{ .Release.Name }}-redis-pv-claim
       containers:  
       - image: redis:6.0.9
         name: redis 
@@ -36,23 +36,23 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: netbox-redis
+  name: {{ .Release.Name }}-redis
   labels:
-    app: netbox-redis
+    app: {{ .Release.Name }}-redis
 spec:
   clusterIP: None
   ports:
-  - name: netbox-redis
+  - name: {{ .Release.Name }}-redis
     port: 6379
     targetPort: 6379
   selector:
-    app: netbox-redis
+    app: {{ .Release.Name }}-redis
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: netbox-redis-pv-claim
+  name: {{ .Release.Name }}-redis-pv-claim
 spec:
   storageClassName: manual
   accessModes:
@@ -65,7 +65,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: netbox-redis-pv
+  name: {{ .Release.Name }}-redis-pv
   labels:
     type: local
 spec:
