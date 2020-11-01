@@ -17,7 +17,7 @@ data:
   EMAIL_USERNAME: foo
   LOGIN_REQUIRED: "true"
   NETBOX_USERNAME: guest
-  SECRET_KEY: "!$9qmU@9qixPE6Qn*mfw94tOolJdkEa#e8F456e17NviB5qlnk"
+  SECRET_KEY: {{ .Values.netbox.secretKey }}
   REDIS_HOST: {{ .Release.Name }}-redis
   REDIS_CACHE_HOST: {{ .Release.Name }}-redis
   REDIS_PORT: "6379"

@@ -3,6 +3,7 @@ netbox:
   superuserName: admin
   superuserPassword: admin
   superuserEmail: admin@example.com
+  secretKey: qwertyuiopasdfghjklzxcvbnm
 
 postgres:
   image: postgres:13.0-alpine
