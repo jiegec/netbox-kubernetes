@@ -19,7 +19,7 @@ spec:
           persistentVolumeClaim:
             claimName: netbox-postgres-pv-claim
       containers:  
-      - image: postgres:11.9-alpine
+      - image: postgres:13.0-alpine
         name: postgres 
         ports:
         - containerPort: 5432
