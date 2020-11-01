@@ -19,7 +19,7 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-redis-pv-claim
       containers:  
-      - image: redis:6.0.9
+      - image: {{ .Values.redis.image }}
         name: redis 
         ports:
         - containerPort: 6379
@@ -75,5 +75,5 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/data/k8s/netbox-redis-db"
+    path: {{ .Values.redis.dataPath }}
 

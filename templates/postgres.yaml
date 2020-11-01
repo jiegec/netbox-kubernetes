@@ -19,7 +19,7 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-postgres-pv-claim
       containers:  
-      - image: postgres:13.0-alpine
+      - image: {{ .Values.postgres.image }}
         name: postgres 
         ports:
         - containerPort: 5432
@@ -92,5 +92,5 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/data/k8s/netbox-postgres-db"
+    path: {{ .Values.postgres.dataPath }}
 

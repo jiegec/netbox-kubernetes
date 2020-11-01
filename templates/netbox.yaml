@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: netbox
-        image: netboxcommunity/netbox:v2.9.8
+        image: {{ .Values.netbox.image }}
         resources:
           limits:
             cpu: 1000m
