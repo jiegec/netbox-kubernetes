@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: netbox
+  name: netbox-app
   labels:
-    app: netbox
+    app: netbox-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: netbox
+      app: netbox-app
   template:
     metadata:
       labels:
-        app: netbox
+        app: netbox-app
     spec:
       containers:
       - name: netbox
-        image: netboxcommunity/netbox:v2.9.8
+        image: netboxcommunity/netbox:v2.8.5
         resources:
           limits:
-            cpu: 100m
-            memory: 100Mi
+            cpu: 1000m
+            memory: 300Mi
         ports:
         - containerPort: 8001
         env:
@@ -28,105 +28,142 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: ALLOWED_HOSTS
-              name: netbox-netbox-env
+              name: netbox-app-env
         - name: DB_HOST
           valueFrom:
             configMapKeyRef:
               key: DB_HOST
-              name: netbox-netbox-env
+              name: netbox-app-env
         - name: DB_NAME
           valueFrom:
             configMapKeyRef:
               key: DB_NAME
-              name: netbox-netbox-env
-        - name: DB_PASSWORD
-          valueFrom:
-            configMapKeyRef:
-              key: DB_PASSWORD
-              name: netbox-netbox-env
+              name: netbox-app-env
         - name: DB_USER
           valueFrom:
             configMapKeyRef:
               key: DB_USER
-              name: netbox-netbox-env
+              name: netbox-app-env
         - name: EMAIL_FROM
           valueFrom:
             configMapKeyRef:
               key: EMAIL_FROM
-              name: netbox-netbox-env
-        - name: EMAIL_PASSWORD
-          valueFrom:
-            configMapKeyRef:
-              key: EMAIL_PASSWORD
-              name: netbox-netbox-env
+              name: netbox-app-env
         - name: EMAIL_PORT
           valueFrom:
             configMapKeyRef:
               key: EMAIL_PORT
-              name: netbox-netbox-env
+              name: netbox-app-env
         - name: EMAIL_SERVER
           valueFrom:
             configMapKeyRef:
               key: EMAIL_SERVER
-              name: netbox-netbox-env
+              name: netbox-app-env
         - name: EMAIL_TIMEOUT
           valueFrom:
             configMapKeyRef:
               key: EMAIL_TIMEOUT
-              name: netbox-netbox-env
+              name: netbox-app-env
         - name: EMAIL_USERNAME
           valueFrom:
             configMapKeyRef:
               key: EMAIL_USERNAME
-              name: netbox-netbox-env
-        - name: NETBOX_PASSWORD
-          valueFrom:
-            configMapKeyRef:
-              key: NETBOX_PASSWORD
-              name: netbox-netbox-env
+              name: netbox-app-env
         - name: NETBOX_USERNAME
           valueFrom:
             configMapKeyRef:
               key: NETBOX_USERNAME
-              name: netbox-netbox-env
-        - name: SECRET_KEY
+              name: netbox-app-env
+        - name: REDIS_HOST
           valueFrom:
             configMapKeyRef:
-              key: SECRET_KEY
-              name: netbox-netbox-env
-        - name: SUPERUSER_API_TOKEN
+              key: REDIS_HOST
+              name: netbox-app-env
+        - name: REDIS_CACHE_HOST
           valueFrom:
             configMapKeyRef:
-              key: SUPERUSER_API_TOKEN
-              name: netbox-netbox-env
-        - name: SUPERUSER_EMAIL
+              key: REDIS_CACHE_HOST
+              name: netbox-app-env
+        - name: REDIS_PORT
           valueFrom:
             configMapKeyRef:
-              key: SUPERUSER_EMAIL
-              name: netbox-netbox-env
-        - name: SUPERUSER_NAME
+              key: REDIS_PORT
+              name: netbox-app-env
+        - name: REDIS_CACHE_PORT
           valueFrom:
             configMapKeyRef:
-              key: SUPERUSER_NAME
-              name: netbox-netbox-env
-        - name: SUPERUSER_PASSWORD
-          valueFrom:
-            configMapKeyRef:
-              key: SUPERUSER_PASSWORD
-              name: netbox-netbox-env
+              key: REDIS_CACHE_PORT
+              name: netbox-app-env
         volumeMounts:
-        - name: netbox-nginx-config
-          mountPath: /etc/netbox-nginx/ 
+        - name: netbox-db-password
+          mountPath: /run/secrets/db_password
+          subPath: DB_PASSWORD
+          readOnly: true
+        - name: netbox-email-password
+          mountPath: /run/secrets/email_password
+          subPath: EMAIL_PASSWORD
+          readOnly: true
+        - name: netbox-secret-key
+          mountPath: /run/secrets/secret_key
+          subPath: SECRET_KEY
+          readOnly: true
+        - name: netbox-superuser-password
+          mountPath: /run/secrets/superuser_password
+          subPath: SUPERUSER_PASSWORD
+          readOnly: true
         - name: netbox-static-files
           mountPath: /opt/netbox/netbox/static  
+      
+      # nginx container
+      - name: nginx
+        image: nginx:1.17.3-alpine
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+          - name: netbox-static-files
+            mountPath: /opt/netbox/netbox/static
+          - name: netbox-nginx-config
+            subPath: nginx.conf
+            mountPath: /etc/nginx/nginx.conf
+
       restartPolicy: Always
       volumes:
+      # passwords
+      - name: netbox-db-password
+        configMap:
+          name: netbox-app-env
+          items:
+            - key: DB_PASSWORD
+              path: DB_PASSWORD
+      - name: netbox-email-password
+        configMap:
+          name: netbox-app-env
+          items:
+            - key: EMAIL_PASSWORD
+              path: EMAIL_PASSWORD
+      - name: netbox-secret-key
+        configMap:
+          name: netbox-app-env
+          items:
+            - key: SECRET_KEY
+              path: SECRET_KEY
+      - name: netbox-superuser-password
+        configMap:
+          name: netbox-app-env
+          items:
+            - key: SUPERUSER_PASSWORD
+              path: SUPERUSER_PASSWORD
+      # nginx
+      - name: netbox-static-files
+        emptyDir: {}
       - name: netbox-nginx-config
         configMap:
-          name: nginx-conf
-      - name: netbox-static-files
-        persistentVolumeClaim:
-          claimName: netbox-static-files-pv-claim
+          name: netbox-app-env
+          items:
+            - key: nginx.conf
+              path: nginx.conf
 
 ---
 apiVersion: v1

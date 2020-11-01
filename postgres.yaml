@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: netbox-postgres
   labels:
-    backend: postgres
+    app: netbox-postgres
 spec:
   replicas: 1
   selector:
     matchLabels:
-      backend: postgres
+      app: netbox-postgres
   template:
     metadata:
       labels:
-        backend: postgres
+        app: netbox-postgres
     spec:
       volumes:
-        - name: postgresdb
+        - name: postgres
           persistentVolumeClaim:
-            claimName: postgres-pv-claim
+            claimName: netbox-postgres-pv-claim
       containers:  
-      - image: postgres:9.6-alpine
+      - image: postgres:11.9-alpine
         name: postgres 
         ports:
         - containerPort: 5432
@@ -29,7 +29,7 @@ spec:
             memory: 100Mi
         volumeMounts:
           - mountPath: /var/lib/postgresql/data
-            name: postgresdb
+            name: postgres
         env:
         - name: POSTGRES_DB
           valueFrom:
@@ -53,25 +53,23 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres
+  name: netbox-postgres
   labels:
-    backend: postgres
+    app: netbox-postgres
 spec:
   clusterIP: None
   ports:
-  - name: postgres
+  - name: netbox-postgres
     port: 5432
     targetPort: 5432
   selector:
-    backend: postgres
+    app: netbox-postgres
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pv-claim
-  labels:
-    app: netbox
+  name: netbox-postgres-pv-claim
 spec:
   storageClassName: manual
   accessModes:
@@ -84,10 +82,9 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgres-pv
+  name: netbox-postgres-pv
   labels:
     type: local
-    app: netbox
 spec:
   storageClassName: manual
   capacity:
