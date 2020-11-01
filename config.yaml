@@ -15,6 +15,7 @@ data:
   EMAIL_SERVER: localhost
   EMAIL_TIMEOUT: "10"
   EMAIL_USERNAME: foo
+  LOGIN_REQUIRED: "true"
   NETBOX_USERNAME: guest
   SECRET_KEY: "!$9qmU@9qixPE6Qn*mfw94tOolJdkEa#e8F456e17NviB5qlnk"
   REDIS_HOST: netbox-redis
