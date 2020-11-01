@@ -57,6 +57,9 @@ spec:
   storageClassName: manual
   accessModes:
     - ReadWriteOnce
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-redis
   resources:
     requests:
       storage: 1Gi
@@ -68,6 +71,7 @@ metadata:
   name: {{ .Release.Name }}-redis-pv
   labels:
     type: local
+    app: {{ .Release.Name }}-redis
 spec:
   storageClassName: manual
   capacity:

@@ -74,6 +74,9 @@ spec:
   storageClassName: manual
   accessModes:
     - ReadWriteOnce
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-postgres
   resources:
     requests:
       storage: 1Gi
@@ -85,6 +88,7 @@ metadata:
   name: {{ .Release.Name }}-postgres-pv
   labels:
     type: local
+    app: {{ .Release.Name }}-postgres
 spec:
   storageClassName: manual
   capacity:
