@@ -126,7 +126,7 @@ spec:
       
       # nginx container
       - name: nginx
-        image: nginx:1.19.3-alpine
+        image: {{ .Values.nginx.image }}
         resources:
           limits:
             cpu: 100m
@@ -183,11 +183,9 @@ metadata:
   labels:
     app: {{ .Release.Name }}-app
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
   - name: netbox
-    port: 8001
-    targetPort: 80
-    nodePort: 30000
+    port: 80
   selector:
     app: {{ .Release.Name }}-app

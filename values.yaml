@@ -1,16 +1,22 @@
 netbox:
   image: netboxcommunity/netbox:v2.9.8
   superuserName: admin
+  # please edit password
   superuserPassword: admin
   superuserEmail: admin@example.com
+  # please edit secret key
   secretKey: qwertyuiopasdfghjklzxcvbnm
   basePath: 'netbox/'
 
+nginx:
+  image: nginx:1.19.3-alpine
+
 postgres:
   image: postgres:13.0-alpine
+  # please edit password
   password: J5brHrAXFLQSif0K
-  dataPath: /data/k8s/netbox-postgres-db
+  storageClass: "rook-cephfs"
 
 redis:
   image: redis:6.0.9
-  dataPath: /data/k8s/netbox-redis-db
+  storageClass: "rook-cephfs"

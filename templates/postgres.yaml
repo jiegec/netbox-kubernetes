@@ -71,30 +71,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-postgres-pv-claim
 spec:
-  storageClassName: manual
+  storageClassName: {{ .Values.postgres.storageClass }}
   accessModes:
     - ReadWriteOnce
-  selector:
-    matchLabels:
-      app: {{ .Release.Name }}-postgres
   resources:
     requests:
       storage: 1Gi
-
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: {{ .Release.Name }}-postgres-pv
-  labels:
-    type: local
-    app: {{ .Release.Name }}-postgres
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: {{ .Values.postgres.dataPath }}
-
