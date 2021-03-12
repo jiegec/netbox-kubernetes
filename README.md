@@ -1,5 +1,7 @@
 # Helm chart for netbox-kubernetes
 
+Forked from https://github.com/vishnoisuresh/netbox-kubernetes.
+
 ## Usage
 
 ```
