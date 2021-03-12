@@ -15,8 +15,10 @@ postgres:
   image: postgres:13.0-alpine
   # please edit password
   password: J5brHrAXFLQSif0K
-  storageClass: "rook-cephfs"
+  persistentVolume:
+    storageClass: "-"
 
 redis:
   image: redis:6.0.9
-  storageClass: "rook-cephfs"
+  persistentVolume:
+    storageClass: "-"

@@ -54,7 +54,13 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-redis-pv-claim
 spec:
-  storageClassName: {{ .Values.redis.storageClass }}
+{{- if .Values.redis.persistentVolume.storageClass }}
+{{- if (eq "-" .Values.redis.persistentVolume.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.redis.persistentVolume.storageClass }}"
+{{- end }}
+{{- end }}
   accessModes:
     - ReadWriteOnce
   resources:

@@ -71,7 +71,13 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-postgres-pv-claim
 spec:
-  storageClassName: {{ .Values.postgres.storageClass }}
+{{- if .Values.postgres.persistentVolume.storageClass }}
+{{- if (eq "-" .Values.postgres.persistentVolume.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.postgres.persistentVolume.storageClass }}"
+{{- end }}
+{{- end }}
   accessModes:
     - ReadWriteOnce
   resources:
