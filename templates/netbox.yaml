@@ -121,8 +121,6 @@ spec:
           mountPath: /run/secrets/superuser_password
           subPath: SUPERUSER_PASSWORD
           readOnly: true
-        - name: netbox-static-files
-          mountPath: /opt/netbox/netbox/static  
       
       # nginx container
       - name: nginx
@@ -132,8 +130,6 @@ spec:
             cpu: 100m
             memory: 100Mi
         volumeMounts:
-          - name: netbox-static-files
-            mountPath: /opt/netbox/netbox/static
           - name: netbox-nginx-config
             subPath: nginx.conf
             mountPath: /etc/nginx/nginx.conf
@@ -166,8 +162,6 @@ spec:
             - key: SUPERUSER_PASSWORD
               path: SUPERUSER_PASSWORD
       # nginx
-      - name: netbox-static-files
-        emptyDir: {}
       - name: netbox-nginx-config
         configMap:
           name: {{ .Release.Name }}-app-env

@@ -46,7 +46,10 @@ data:
           server_name _;
           access_log off;
           location /{{ .Values.netbox.basePath }}static/ {
-            alias /opt/netbox/netbox/static/;
+            proxy_pass http://127.0.0.1:8080/static/;
+            proxy_set_header X-Forwarded-Host $http_host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
           }
 
           location / {
