@@ -177,7 +177,6 @@ metadata:
   labels:
     app: {{ .Release.Name }}-app
 spec:
-  type: ClusterIP
   ports:
   - name: netbox
     port: 80

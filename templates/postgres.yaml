@@ -57,7 +57,6 @@ metadata:
   labels:
     app: {{ .Release.Name }}-postgres
 spec:
-  clusterIP: None
   ports:
   - name: netbox-postgres
     port: 5432

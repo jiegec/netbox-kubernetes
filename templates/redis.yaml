@@ -40,7 +40,6 @@ metadata:
   labels:
     app: {{ .Release.Name }}-redis
 spec:
-  clusterIP: None
   ports:
   - name: {{ .Release.Name }}-redis
     port: 6379
