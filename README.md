@@ -2,6 +2,8 @@
 
 Forked from https://github.com/vishnoisuresh/netbox-kubernetes.
 
+Caveat: upgrade to v2.11 before upgrading to v3.0.
+
 ## Usage
 
 ```
