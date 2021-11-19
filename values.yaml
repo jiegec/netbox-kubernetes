@@ -1,5 +1,5 @@
 netbox:
-  image: netboxcommunity/netbox:v3.0.8
+  image: netboxcommunity/netbox:v3.0.10
   superuserName: admin
   # please edit password
   superuserPassword: admin
@@ -12,13 +12,13 @@ nginx:
   image: nginx:1.19.8-alpine
 
 postgres:
-  image: postgres:13.2-alpine
+  image: postgres:13.5-alpine
   # please edit password
   password: J5brHrAXFLQSif0K
   persistentVolume:
     storageClass: "-"
 
 redis:
-  image: redis:6.2.1
+  image: redis:6.2.6
   persistentVolume:
     storageClass: "-"
