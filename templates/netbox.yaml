@@ -29,6 +29,11 @@ spec:
             configMapKeyRef:
               key: ALLOWED_HOSTS
               name: {{ .Release.Name }}-app-env
+        - name: CSRF_TRUSTED_ORIGINS
+          valueFrom:
+            configMapKeyRef:
+              key: CSRF_TRUSTED_ORIGINS
+              name: {{ .Release.Name }}-app-env
         - name: DB_HOST
           valueFrom:
             configMapKeyRef:

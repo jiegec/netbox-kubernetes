@@ -5,6 +5,7 @@ metadata:
   name: {{ .Release.Name }}-app-env
 data:
   ALLOWED_HOSTS: '*'
+  CSRF_TRUSTED_ORIGINS: {{ .Values.netbox.csrfOrigin }}
   DB_HOST: {{ .Release.Name }}-postgres
   DB_NAME: netbox
   DB_USER: netbox
