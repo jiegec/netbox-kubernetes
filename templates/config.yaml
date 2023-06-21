@@ -29,6 +29,10 @@ data:
   SUPERUSER_EMAIL: {{ .Values.netbox.superuserEmail }}
   SUPERUSER_NAME: {{ .Values.netbox.superuserName }}
   SUPERUSER_PASSWORD: {{ .Values.netbox.superuserPassword }}
+  extra.py: |
+    import os
+    BASE_PATH = os.environ.get('BASE_PATH', '')
+
   nginx.conf: |
     worker_processes 1;
     events {

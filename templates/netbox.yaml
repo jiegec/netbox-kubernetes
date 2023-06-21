@@ -126,6 +126,9 @@ spec:
           mountPath: /run/secrets/superuser_password
           subPath: SUPERUSER_PASSWORD
           readOnly: true
+        - name: netbox-extra-py
+          subPath: extra.py
+          mountPath: /etc/netbox/config/extra.py
       
       # nginx container
       - name: nginx
@@ -166,6 +169,12 @@ spec:
           items:
             - key: SUPERUSER_PASSWORD
               path: SUPERUSER_PASSWORD
+      - name: netbox-extra-py
+        configMap:
+          name: {{ .Release.Name }}-app-env
+          items:
+            - key: extra.py
+              path: extra.py
       # nginx
       - name: netbox-nginx-config
         configMap:
