@@ -1,5 +1,5 @@
 netbox:
-  image: netboxcommunity/netbox:v3.5.4
+  image: netboxcommunity/netbox:v3.5.7
   superuserName: admin
   # please edit password
   superuserPassword: admin
