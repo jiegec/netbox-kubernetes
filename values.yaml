@@ -11,7 +11,7 @@ netbox:
   csrfOrigin: 'http://www.example.com'
 
 nginx:
-  image: nginx:1.19.8-alpine
+  image: nginx:1.27.4-alpine
 
 postgres:
   image: postgres:13.5-alpine
