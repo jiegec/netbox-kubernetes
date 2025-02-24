@@ -14,7 +14,7 @@ nginx:
   image: nginx:1.27.4-alpine
 
 postgres:
-  image: postgres:13.19-alpine
+  image: pgautoupgrade/pgautoupgrade:14-alpine
   # please edit password
   password: J5brHrAXFLQSif0K
   persistentVolume:
